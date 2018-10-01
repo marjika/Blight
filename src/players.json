@@ -3,9 +3,7 @@
         "id": 1,
         "name": "Sophie Clark",
         "occupation": "quarantine specialist",
-        "startingCityId": 2, 
-        "x": 200,
-        "y": 300
+        "startingCityId": 2
     },
     {
         "id": 2,

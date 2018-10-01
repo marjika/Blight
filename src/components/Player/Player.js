@@ -1,4 +1,6 @@
 import React from "react";
+import './Player.css';
+
 
 class Player extends React.Component {
 
@@ -9,9 +11,8 @@ class Player extends React.Component {
   
   <div className="player">
 
-      <h6>{this.props.name}</h6>
-      <h6><strong>Occupation:</strong> {this.props.occupation}</h6>
- 
+      <h6>{this.props.name}, {this.props.occupation}, </h6>
+     
   </div>
 
 )}};

@@ -1,10 +1,33 @@
 import React from "react";
 import CityList from "../CityList";
-import Player from "../Player";
-import Modal from "../Modal";
+//import Player from "../Player";
 import USMap from "../USMap";
+import Modal from "../Modal";
+import Footer from "../Footer";
+import { Col, Row, Container } from "../Grid";
 import cities from "../../cities.json";
 import staff from "../../players.json";
+import usmap from '../images/USA.jpg';
+
+function circle(ctx, x, y, value) {
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, 2 * Math.PI);
+    ctx.stroke();
+    if (value === 3 ) {
+        ctx.fillStyle = "red"
+    }
+    else if (value === 2) {
+        ctx.fillStyle = "orange"
+    }
+    else if (value === 1) {
+        ctx.fillStyle = "yellow"
+    }
+    else if (value === 0) {
+        ctx.fillStyle = "green"
+    }
+    ctx.fill();
+}
+
 
 class Board extends React.Component {
        
@@ -14,6 +37,7 @@ class Board extends React.Component {
         this.state = {
             staff,
             cities,
+            infections: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
             sampleFound: false,
             proteinFound: false,
             scientistFound: false,
@@ -23,9 +47,52 @@ class Board extends React.Component {
             missionThree: false,
             missionFour: false,
             show: false,
-            modalText: ""
+            modalText: "",
+            outbreaks: 0,
+            moves: 0
           }; 
     }
+
+    componentDidMount() {
+        this.drawCanvas()
+    }
+
+
+    componentDidUpdate() {
+        this.updateCanvas();
+    }
+
+    drawCanvas() {
+        const canvas = this.refs.canvas
+        const ctx = canvas.getContext("2d")
+        const img = this.refs.image
+      
+        ctx.drawImage(img, 0, 0, img.width, img.height,    
+                          0, 0, canvas.width, canvas.height);
+        this.state.infections.map((item, index) => {
+            circle(ctx, cities[index].x, cities[index].y, item)
+        });
+    }
+
+    clearCanvas() {
+        const canvas = this.refs.canvas
+        const ctx = canvas.getContext("2d")
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    updateCanvas() {
+        const canvas = this.refs.canvas
+        const ctx = canvas.getContext("2d")
+        const img = this.refs.image
+      
+          ctx.drawImage(img, 0, 0, img.width, img.height,    
+                            0, 0, canvas.width, canvas.height);
+          this.state.infections.map((item, index) => {
+              circle(ctx, cities[index].x, cities[index].y, item)
+          });
+        
+      }
+      
 
     //modal functionality
     showModal = () => {
@@ -123,53 +190,75 @@ class Board extends React.Component {
         }
     }
 
-    // outbreak = () => {
-    //     outbreakCount++;
-    //     console.log(outbreakCount);
-    //     this.setState({ modalText: "You've had an outbreak " + outbreakCount + " times." }, () => {
-    //         this.showModal();
-    //     })   
-    //     if (outbreakCount > 7) {
-    //       this.props.loseGame();
-    //     }
-    // }
+    //sets the array of infections so they can be rendered as circles on the map
+    cityInfectionArrayChange = (array) => {
+        const infections = array;
+        this.setState({ infections: infections }, () => {
+            this.clearCanvas();
+            this.updateCanvas();
+        })
+    }
+
+    //Gets the number of moves and outbreaks from CityList
+    sendStats = (actions, outbreakCount) => {
+     
+        this.setState({ moves: actions, outbreaks: outbreakCount})
+    }
+
 
     render() {
         return (
-         <div className="Board">
-            <USMap text="Sophie rules"/>
-            {this.state.staff.map(person => (
-                <Player
-                    name={person.name}
-                    occupation={person.occupation}
-                    id={person.id}
-                    key={person.id}
-                    currentLocation={this.state.currentLocation}
-                />
-            ))}
-            <CityList
-                cities={cities}
-                sampleCityId={this.props.sampleCityId}
-                proteinCityId={this.props.proteinCityId}
-                scientistCityId={this.props.scientistCityId}
-                immuneManCityId={this.props.immuneManCityId}
-                foundSample={this.foundSample}
-                sample={this.state.sampleFound}
-                mission1={this.mission1}
-                foundProtein={this.foundProtein}
-                protein={this.state.proteinFound}
-                mission2={this.mission2}
-                foundScientist={this.foundScientist}
-                scientist={this.state.scientistFound}
-                mission3={this.mission3}
-                foundImmuneMan={this.foundImmuneMan}
-                immuneMan={this.state.immuneManFound}
-                mission4={this.mission4}
-                loseGame={this.props.loseGame}
-                //outbreak={this.outbreak}
-                />
-                <Modal show={this.state.show} modalText={this.state.modalText}></Modal>
+        <Container fluid>
+            <div className="Board">
+            <Row>
+            <Col size="md-9">
+                <canvas ref="canvas" width={1000} height={563}/>
+                <img ref="image" src={usmap} alt="" className="hidden" />
+            </Col>
+            <Col size="md-3">
+                <CityList
+                    cities={cities}
+                    sampleCityId={this.props.sampleCityId}
+                    proteinCityId={this.props.proteinCityId}
+                    scientistCityId={this.props.scientistCityId}
+                    immuneManCityId={this.props.immuneManCityId}
+                    foundSample={this.foundSample}
+                    sample={this.state.sampleFound}
+                    mission1={this.mission1}
+                    foundProtein={this.foundProtein}
+                    protein={this.state.proteinFound}
+                    mission2={this.mission2}
+                    foundScientist={this.foundScientist}
+                    scientist={this.state.scientistFound}
+                    mission3={this.mission3}
+                    foundImmuneMan={this.foundImmuneMan}
+                    immuneMan={this.state.immuneManFound}
+                    mission4={this.mission4}
+                    loseGame={this.props.loseGame}
+                    cityInfectionArrayChange={this.cityInfectionArrayChange}
+                    sendStats={this.sendStats}
+                    />
+                </Col>
+                </Row>
+                <Row>
+                    <Modal show={this.state.show} modalText={this.state.modalText}></Modal>
+                </Row>
+                <Row>
+                    <Footer
+                    moves={4 - this.state.moves}
+                    outbreaks={this.state.outbreaks}
+                    sample={this.state.sampleFound}
+                    mission1={this.state.missionOne}
+                    protein={this.state.proteinFound}
+                    mission2={this.state.missionTwo}
+                    scientist={this.state.scientistFound}
+                    mission3={this.state.missionThree}
+                    immuneMan={this.state.immuneManFound}
+                    mission4={this.state.missionFour}
+                    />
+                </Row>
             </div>
+            </Container>
             );
           }
         }

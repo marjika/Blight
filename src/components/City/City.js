@@ -1,4 +1,6 @@
 import React from "react";
+import './City.css';
+
 
 function randomInfection() {
     return Math.floor(Math.random() * 3) + 1;
@@ -34,9 +36,15 @@ class City extends React.Component {
                 const infectionRate = this.state.infectionRate+infectionLevel;
                 if (infectionRate > 3) {
                     this.props.outbreak();
-                    this.setState({ infectionRate: 3 });
+                    this.setState({ infectionRate: 3 }, () => {
+                        this.props.infectionArrayChange(this.props.id, this.state.infectionRate)
+                    }); 
                 } else {
-                this.setState({ infectionRate: infectionRate })}
+                this.setState({ infectionRate: infectionRate }, () => {
+                    this.props.infectionArrayChange(this.props.id, this.state.infectionRate)
+                });
+            }
+
             }
         }
         infectionLevel = randomInfection();
@@ -46,16 +54,23 @@ class City extends React.Component {
     heal = (id) => {
         if (id===this.props.id) {
         const infectionRate = this.state.infectionRate-1;
-        this.setState({ infectionRate: infectionRate })
+        this.setState({ infectionRate: infectionRate }, () => {
+            this.props.infectionArrayChange(this.props.id, this.state.infectionRate)
+        });
     }}
 
     //the general has ability to double heal cities
     doubleHeal = (id) => {
         if (id===this.props.id && this.state.infectionRate>=2) {
         const infectionRate = this.state.infectionRate-2;
-        this.setState({ infectionRate: infectionRate })}
+        this.setState({ infectionRate: infectionRate }, () => {
+            this.props.infectionArrayChange(this.props.id, this.state.infectionRate)
+            })
+        };
         if (id===this.props.id && this.state.infectionRate<2) {
-            this.setState({ infectionRate: 0 })
+            this.setState({ infectionRate: 0 }, () => {
+                this.props.infectionArrayChange(this.props.id, this.state.infectionRate)
+            })
     }}
 
     render() {
@@ -63,62 +78,63 @@ class City extends React.Component {
     
     <div className="city">
 
-        <h6>{this.props.name}</h6>
-        <h6>{this.state.infectionRate}</h6>
-        {this.state.infectionRate > 0 && (this.props.id===this.props.person1LocationId) &&
-        <button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
-          Cure Zombies
-        </button>}
-        {this.state.infectionRate > 0 && (this.props.id===this.props.person2LocationId) &&
-        <button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
-            Cure Zombies
-        </button>
-        }
-        {this.state.infectionRate > 0 && (this.props.id===this.props.person3LocationId) &&
-        <button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
-            Cure Zombies
-        </button>
-        }
-        {this.state.infectionRate > 0 && (this.props.id===this.props.person4LocationId) &&
-        <button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
-            Cure Zombies
-        </button>
-        }
-        {this.state.infectionRate > 0 && (this.props.id===this.props.person5LocationId) &&
-        <button onClick={(event) => { this.doubleHeal(this.props.id); this.props.increaseCount();}}>
-            Cure Zombies (X2)
-        </button>
-        }
+        {/* <h5>{this.props.name}</h5> */}
+        {/* <h6>{this.state.infectionRate}</h6> */}
         {(this.props.id===this.props.person1LocationId) &&
-        <div><h5>Where do you want to go next?</h5>
+        <div className="nextLocation"><h6>is in {this.props.name}. Where do you want her to go next?</h6>
         <div>{this.props.connections.map((place) => (
             <button key={place.toString()} onClick={() => this.props.moveLocation1(place)}> {place} </button>
         ))}</div></div>
       }
         {(this.props.id===this.props.person2LocationId) &&
-        <div><h5>Where do you want to go next?</h5>
+        <div className="nextLocation"><h6>is in {this.props.name}. Where do you want him to go next?</h6>
         <div>{this.props.connections.map((place) => (
             <button key={place.toString()} onClick={() => this.props.moveLocation2(place)}> {place} </button>
         ))}</div></div>
       }
         {(this.props.id===this.props.person3LocationId) &&
-        <div><h5>Where do you want to go next?</h5>
+        <div className="nextLocation"><h6>is in {this.props.name}. Where do you want him to go next?</h6>
         <div>{this.props.connections.map((place) => (
             <button key={place.toString()} onClick={() => this.props.moveLocation3(place)}> {place} </button>
         ))}</div></div>
       }
         {(this.props.id===this.props.person4LocationId) &&
-        <div><h5>Where do you want to go next?</h5>
+        <div className="nextLocation"><h6>is in {this.props.name}. Where do you want her to go next?</h6>
         <div>{this.props.connections.map((place) => (
             <button key={place.toString()} onClick={() => this.props.moveLocation4(place)}> {place} </button>
         ))}</div></div>
       }
         {(this.props.id===this.props.person5LocationId) &&
-        <div><h5>Where do you want to go next?</h5>
+        <div className="nextLocation"><h6>is in {this.props.name}. Where do you want him to go next?</h6>
         <div>{this.props.connections.map((place) => (
             <button key={place.toString()} onClick={() => this.props.moveLocation5(place)}> {place} </button>
         ))}</div></div>
       }
+        {(this.state.infectionRate > 0) && ((this.props.id===this.props.person1LocationId)||(this.props.id===this.props.person2LocationId)||(this.props.id===this.props.person3LocationId)||(this.props.id===this.props.person4LocationId)) &&
+        <div className="heal"><button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
+          Reduce Zombies in {this.props.name}
+        </button></div>
+        }
+        {/* {this.state.infectionRate > 0 && (this.props.id===this.props.person2LocationId) &&
+        <div className="heal"><h6>Fight infection in this city: </h6><button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
+            Cure Zombies in {this.props.name}
+        </button></div>
+        }
+        {this.state.infectionRate > 0 && (this.props.id===this.props.person3LocationId) &&
+        <div className="heal"><h6>Fight infection in this city: </h6><button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
+            Cure Zombies in {this.props.name}
+        </button></div>
+        }
+        {this.state.infectionRate > 0 && (this.props.id===this.props.person4LocationId) &&
+        <div className="heal"><h6>Fight infection in this city: </h6><button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
+            Cure Zombies in {this.props.name}
+        </button></div>
+        } */}
+        {this.state.infectionRate > 0 && (this.props.id===this.props.person5LocationId) &&
+        <div className="heal"><button onClick={(event) => { this.doubleHeal(this.props.id); this.props.increaseCount();}}>
+            Reduce Zombies (X2) in {this.props.name}
+        </button></div>
+        }
    
     </div>
 

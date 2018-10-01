@@ -2,6 +2,7 @@ import React from "react";
 import City from "../City";
 import Player from "../Player";
 import Modal from "../Modal";
+import './CityList.css';
 import staff from "../../players.json";
 import cities from "../../cities.json";
 
@@ -40,7 +41,8 @@ class CityList extends React.Component {
           currentLocation4: 16,
           currentLocation5: 22,
           show: false,
-          modalText: ""
+          modalText: "",
+          cityInfections: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         }
     }
 
@@ -72,7 +74,7 @@ class CityList extends React.Component {
       if (actions > 3) {
         this.refreshRandom();
       }
-      console.log(actions);
+      this.props.sendStats(actions, outbreakCount);
     }
 
     //Staff 2 movement
@@ -126,6 +128,7 @@ class CityList extends React.Component {
       if (outbreakCount < 7) {
         outbreakCount++;
         this.setState({ modalText: "You've had an outbreak " + outbreakCount + " times." }, () => {
+          this.props.sendStats(actions, outbreakCount);
           this.showModal();
       })   
       } else {
@@ -144,13 +147,75 @@ class CityList extends React.Component {
       setTimeout(()=>this.setState({show: false}), 2000);
     }
 
+    infectionArrayChange = (index, value) => {
+       const infectArray = this.state.cityInfections
+       if (index !== -1) {
+        infectArray[index-1] = value
+      }
+      this.setState({ cityInfections:infectArray }, () => {
+        this.props.cityInfectionArrayChange(this.state.cityInfections)
+      })
+      //console.log(this.state.cityInfections)
+     }
+
     render() {
       return (
 
     <div className="cities">
       <ul className="city-list">
       {this.props.cities.map(item => (
-        <li className="list-group-item" key={item.id}>
+        <li key={item.id}>
+        {item.id===this.state.currentLocation1 &&
+        <div className="players">
+          <Player
+              key={this.state.staff[0].id}
+              name={this.state.staff[0].name}
+              occupation={this.state.staff[0].occupation}
+              id={this.state.staff[0].id}
+              currentLocation1={this.state.currentLocation1}
+          />
+        </div>}
+        {item.id===this.state.currentLocation2 &&
+        <div className="players">
+          <Player
+                key={this.state.staff[1].id}
+                name={this.state.staff[1].name}
+                occupation={this.state.staff[1].occupation}
+                id={this.state.staff[1].id}
+                currentLocation2={this.state.currentLocation2}
+          />
+        </div>}
+        {item.id===this.state.currentLocation3 &&
+        <div className="players">
+          <Player
+                key={this.state.staff[2].id}
+                name={this.state.staff[2].name}
+                occupation={this.state.staff[2].occupation}
+                id={this.state.staff[2].id}
+                currentLocation3={this.state.currentLocation3}
+          />
+        </div>}
+        {item.id===this.state.currentLocation4 &&
+        <div className="players">
+          <Player
+                key={this.state.staff[3].id}
+                name={this.state.staff[3].name}
+                occupation={this.state.staff[3].occupation}
+                id={this.state.staff[3].id}
+                currentLocation4={this.state.currentLocation4}
+          />
+        </div>}
+        {item.id===this.state.currentLocation5 &&
+        <div className="players">
+          <Player
+                key={this.state.staff[4].id}
+                name={this.state.staff[4].name}
+                occupation={this.state.staff[4].occupation}
+                id={this.state.staff[4].id}
+                currentLocation5={this.state.currentLocation5}
+          />
+        </div>}
+        <div className="cityIndividual">
         <City
           id={item.id}
           name={item.location}
@@ -169,57 +234,9 @@ class CityList extends React.Component {
           increaseCount={this.increaseCount}
           refresh={this.state.refresh}
           outbreak={this.outbreak}
+          infectionArrayChange={this.infectionArrayChange}
         />
-        {item.id===this.state.currentLocation1 &&
-        <div>
-          <Player
-              key={this.state.staff[0].id}
-              name={this.state.staff[0].name}
-              occupation={this.state.staff[0].occupation}
-              id={this.state.staff[0].id}
-              currentLocation1={this.state.currentLocation1}
-          />
-        </div>}
-        {item.id===this.state.currentLocation2 &&
-        <div>
-          <Player
-                key={this.state.staff[1].id}
-                name={this.state.staff[1].name}
-                occupation={this.state.staff[1].occupation}
-                id={this.state.staff[1].id}
-                currentLocation2={this.state.currentLocation2}
-          />
-        </div>}
-        {item.id===this.state.currentLocation3 &&
-        <div>
-          <Player
-                key={this.state.staff[2].id}
-                name={this.state.staff[2].name}
-                occupation={this.state.staff[2].occupation}
-                id={this.state.staff[2].id}
-                currentLocation3={this.state.currentLocation3}
-          />
-        </div>}
-        {item.id===this.state.currentLocation4 &&
-        <div>
-          <Player
-                key={this.state.staff[3].id}
-                name={this.state.staff[3].name}
-                occupation={this.state.staff[3].occupation}
-                id={this.state.staff[3].id}
-                currentLocation4={this.state.currentLocation4}
-          />
-        </div>}
-        {item.id===this.state.currentLocation5 &&
-        <div className="inLine">
-          <Player
-                key={this.state.staff[4].id}
-                name={this.state.staff[4].name}
-                occupation={this.state.staff[4].occupation}
-                id={this.state.staff[4].id}
-                currentLocation5={this.state.currentLocation5}
-          />
-        </div>}
+        </div>
         </li>
       ))}
     </ul>

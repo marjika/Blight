@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Board from "../../Board";
-import Modal from "../../Modal";
+//import Modal from "../../Modal";
 import './Game.css';
+//import blue from "../../images/blue.jpg"
 
 function randomIntFromInterval(min,max)
 {
@@ -28,31 +29,39 @@ class Game extends Component {
     this.setState({ sampleCity: sampleCityId, proteinCity: proteinCityId, scientistCity: scientistCityId, immuneManCity: immuneManCityId })
   }
 
-  showModal = () => {
-    this.setState({show: !this.state.show}, () => {
-      this.hideModal();
-  });
-  }
+  // showModal = () => {
+  //   this.setState({show: !this.state.show}, () => {
+  //     this.hideModal();
+  // });
+  // }
 
-  hideModal = () => {
-    setTimeout(()=>this.setState({show: !this.state.show}), 2000);
-  }
+  // hideModal = () => {
+  //   setTimeout(()=>this.setState({show: !this.state.show}), 2000);
+  // }
 
   winGame = () => {
     this.setState({ modalText : "You win" }, () => {
-      this.showModal();
+      this.toWin();
     })
   };
 
   loseGame = () => {
     this.setState({ modalText : "You lose" }, () => {
-      this.showModal();
+      this.toLose();
   })
   };
 
+  toLose() {
+    window.location.assign("/lose")
+}
+
+  toWin() {
+    window.location.assign("/win")
+  }
+
   render() {
     return (
-      <div className="App">
+      <div className="Game">
 
         <Board
           sampleCityId={this.state.sampleCity}
@@ -62,10 +71,12 @@ class Game extends Component {
           winGame={this.winGame}
           loseGame={this.loseGame}
         />
-        <Modal show={this.state.show} modalText={this.state.modalText}></Modal>
+        {/* <Modal show={this.state.show} modalText={this.state.modalText}></Modal> */}
       </div>
     );
   }
 }
 
 export default Game;
+
+// style={{ backgroundImage: `url(${blue})`}}
