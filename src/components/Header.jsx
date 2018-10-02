@@ -1,6 +1,6 @@
 import React from 'react'
-import './Home.css'
 // TODO - add proptypes
+import './Home.css'
 
 const Header = props => {
 	let Greeting
@@ -20,7 +20,7 @@ const Header = props => {
 		)
 	}
 	return (
-		<div className="Header" style={{margin: 0, color:"whitesmoke"}}>
+		<div className="Header">
 			{Greeting}
 		</div>
 	)

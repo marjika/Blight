@@ -74,7 +74,7 @@ class CityList extends React.Component {
       if (actions > 3) {
         this.refreshRandom();
       }
-      this.props.sendStats(actions, outbreakCount);
+      console.log(actions);
     }
 
     //Staff 2 movement
@@ -128,7 +128,6 @@ class CityList extends React.Component {
       if (outbreakCount < 7) {
         outbreakCount++;
         this.setState({ modalText: "You've had an outbreak " + outbreakCount + " times." }, () => {
-          this.props.sendStats(actions, outbreakCount);
           this.showModal();
       })   
       } else {

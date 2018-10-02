@@ -5,9 +5,13 @@ body {
   font-size: 18px;
 }
 
-button {
+/* .player {
+  margin-top: 10px;
+} */
+
+/* button {
   background-color: #4CAF50; /* Green */
-  border: none;
+  /* border: none;
   color: white;
   padding: 4px 8px;
   text-align: center;
@@ -18,4 +22,4 @@ button {
   margin-right: 3px;
   border-radius: 8px;
   border: 2px solid black;
-}
+} */
