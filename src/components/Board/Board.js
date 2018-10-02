@@ -74,6 +74,21 @@ class Board extends React.Component {
         });
     }
 
+        // updateCanvas() {
+    //     const canvas = this.refs.canvas
+    //     const ctx = canvas.getContext("2d")
+    //     const img = this.refs.image
+
+    //     img.onload = () => {
+    //         ctx.drawImage(img, 0, 0, img.width, img.height,
+    //             0, 0, canvas.width, canvas.height);
+
+    //         this.state.infections.map((item, index) => {
+    //             circle(ctx, cities[index].x, cities[index].y, item)
+    //         });
+    //     }
+    // }
+
     clearCanvas() {
         const canvas = this.refs.canvas
         const ctx = canvas.getContext("2d")

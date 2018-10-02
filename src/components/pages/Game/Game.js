@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Board from "../../Board";
-//import Modal from "../../Modal";
 import './Game.css';
 //import blue from "../../images/blue.jpg"
 
@@ -10,6 +9,7 @@ function randomIntFromInterval(min,max)
 }
 
 class Game extends Component {
+
 
   state = {
     immuneManCity: 16,
@@ -27,7 +27,9 @@ class Game extends Component {
     const scientistCityId = randomIntFromInterval(12,15);
     const immuneManCityId= randomIntFromInterval(17,20);
     this.setState({ sampleCity: sampleCityId, proteinCity: proteinCityId, scientistCity: scientistCityId, immuneManCity: immuneManCityId })
-  }
+}
+
+ 
 
   // showModal = () => {
   //   this.setState({show: !this.state.show}, () => {
@@ -40,13 +42,13 @@ class Game extends Component {
   // }
 
   winGame = () => {
-    this.setState({ modalText : "You win" }, () => {
+    this.setState({ gameIsOver: true }, () => {
       this.toWin();
     })
   };
 
   loseGame = () => {
-    this.setState({ modalText : "You lose" }, () => {
+    this.setState({ gameIsOver: true }, () => {
       this.toLose();
   })
   };
@@ -71,12 +73,9 @@ class Game extends Component {
           winGame={this.winGame}
           loseGame={this.loseGame}
         />
-        {/* <Modal show={this.state.show} modalText={this.state.modalText}></Modal> */}
       </div>
     );
   }
 }
 
 export default Game;
-
-// style={{ backgroundImage: `url(${blue})`}}
