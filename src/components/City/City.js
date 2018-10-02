@@ -38,7 +38,9 @@ class City extends React.Component {
                     this.props.outbreak();
                     this.setState({ infectionRate: 3 }, () => {
                         this.props.infectionArrayChange(this.props.id, this.state.infectionRate)
-                    }); 
+                    });
+                    //draw infection on city
+                    //this.props.city.x this.props.city.x 
                 } else {
                 this.setState({ infectionRate: infectionRate }, () => {
                     this.props.infectionArrayChange(this.props.id, this.state.infectionRate)
@@ -81,58 +83,58 @@ class City extends React.Component {
         {/* <h5>{this.props.name}</h5> */}
         {/* <h6>{this.state.infectionRate}</h6> */}
         {(this.props.id===this.props.person1LocationId) &&
-        <div className="nextLocation"><h6>is in {this.props.name}. Where do you want her to go next?</h6>
+        <div className="nextLocation"><h6> {this.props.name}. Where do you want her to go next?</h6>
         <div>{this.props.connections.map((place) => (
             <button key={place.toString()} onClick={() => this.props.moveLocation1(place)}> {place} </button>
         ))}</div></div>
       }
         {(this.props.id===this.props.person2LocationId) &&
-        <div className="nextLocation"><h6>is in {this.props.name}. Where do you want him to go next?</h6>
+        <div className="nextLocation"><h6> {this.props.name}. Where do you want him to go next?</h6>
         <div>{this.props.connections.map((place) => (
             <button key={place.toString()} onClick={() => this.props.moveLocation2(place)}> {place} </button>
         ))}</div></div>
       }
         {(this.props.id===this.props.person3LocationId) &&
-        <div className="nextLocation"><h6>is in {this.props.name}. Where do you want him to go next?</h6>
+        <div className="nextLocation"><h6> {this.props.name}. Where do you want him to go next?</h6>
         <div>{this.props.connections.map((place) => (
             <button key={place.toString()} onClick={() => this.props.moveLocation3(place)}> {place} </button>
         ))}</div></div>
       }
         {(this.props.id===this.props.person4LocationId) &&
-        <div className="nextLocation"><h6>is in {this.props.name}. Where do you want her to go next?</h6>
+        <div className="nextLocation"><h6> {this.props.name}. Where do you want her to go next?</h6>
         <div>{this.props.connections.map((place) => (
             <button key={place.toString()} onClick={() => this.props.moveLocation4(place)}> {place} </button>
         ))}</div></div>
       }
         {(this.props.id===this.props.person5LocationId) &&
-        <div className="nextLocation"><h6>is in {this.props.name}. Where do you want him to go next?</h6>
+        <div className="nextLocation"><h6> {this.props.name}. Where do you want him to go next?</h6>
         <div>{this.props.connections.map((place) => (
             <button key={place.toString()} onClick={() => this.props.moveLocation5(place)}> {place} </button>
         ))}</div></div>
       }
-        {(this.state.infectionRate > 0) && ((this.props.id===this.props.person1LocationId)||(this.props.id===this.props.person2LocationId)||(this.props.id===this.props.person3LocationId)||(this.props.id===this.props.person4LocationId)) &&
-        <div className="heal"><button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
-          Reduce Zombies in {this.props.name}
+        {(this.state.infectionRate > 0) && (this.props.id===this.props.person1LocationId) &&
+        <div className="heal"><h6>Fight infection in this city: </h6><button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
+          Cure Zombies
         </button></div>
         }
-        {/* {this.state.infectionRate > 0 && (this.props.id===this.props.person2LocationId) &&
+        {this.state.infectionRate > 0 && (this.props.id===this.props.person2LocationId) &&
         <div className="heal"><h6>Fight infection in this city: </h6><button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
-            Cure Zombies in {this.props.name}
+            Cure Zombies
         </button></div>
         }
         {this.state.infectionRate > 0 && (this.props.id===this.props.person3LocationId) &&
         <div className="heal"><h6>Fight infection in this city: </h6><button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
-            Cure Zombies in {this.props.name}
+            Cure Zombies
         </button></div>
         }
         {this.state.infectionRate > 0 && (this.props.id===this.props.person4LocationId) &&
         <div className="heal"><h6>Fight infection in this city: </h6><button onClick={(event) => { this.heal(this.props.id); this.props.increaseCount();}}>
-            Cure Zombies in {this.props.name}
+            Cure Zombies
         </button></div>
-        } */}
+        }
         {this.state.infectionRate > 0 && (this.props.id===this.props.person5LocationId) &&
-        <div className="heal"><button onClick={(event) => { this.doubleHeal(this.props.id); this.props.increaseCount();}}>
-            Reduce Zombies (X2) in {this.props.name}
+        <div className="heal"><h6>Fight infection in this city: </h6><button onClick={(event) => { this.doubleHeal(this.props.id); this.props.increaseCount();}}>
+            Cure Zombies (X2)
         </button></div>
         }
    

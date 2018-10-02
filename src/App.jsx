@@ -5,10 +5,9 @@ import './App.css'
 import LoginForm from './components/Login/LoginForm'
 import SignupForm from './components/SignupForm'
 import Game from "./components/pages/Game";
-import Lose from "./components/pages/Lose";
-import Win from "./components/pages/Win";
 import Header from './components/Header'
 import Home from './components/Home'
+import './components/Home.css'
 
 const DisplayLinks = props => {
 	if (props.loggedIn) {
@@ -16,21 +15,18 @@ const DisplayLinks = props => {
 			<nav className="navbar">
 				<ul className="nav">
 					<li className="nav-item">
-						<Header user={props.user} style={{color:"whitesmoke"}} />
-					</li>
-					<li className="nav-item">
-						<Link to="/" className="nav-link" style={{color:"whitesmoke"}}>
+						<Link to="/" className="nav-link">
 							Home
 						</Link>
 					</li>
 					<li className="nav-item">
-						<Link to="/game" className="nav-link" style={{color:"whitesmoke"}} >
-							Play Blight
+						<Link to="/game" className="nav-link">
+							Play
 						</Link>
 					</li>
-					<li className="nav-item">
-						<Link to="#" className="nav-link" onClick={props._logout} style={{color:"whitesmoke"}}>
-							Logout
+					<li>
+						<Link to="#" className="nav-link" onClick={props._logout}>
+							Log Out
 						</Link>
 					</li>
 				</ul>
@@ -47,12 +43,12 @@ const DisplayLinks = props => {
 					</li>
 					<li className="nav-item">
 						<Link to="/login" className="nav-link">
-							login
+							Log In
 						</Link>
 					</li>
 					<li className="nav-item">
 						<Link to="/signup" className="nav-link">
-							sign up
+							Sign Up
 						</Link>
 					</li>
 				</ul>
@@ -124,9 +120,9 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				{/* <Header user={this.state.user} /> */}
+				<Header user={this.state.user} />
 				{/* LINKS to our different 'pages' */}
-				<DisplayLinks _logout={this._logout} loggedIn={this.state.loggedIn} user={this.state.user}/>
+				<DisplayLinks _logout={this._logout} loggedIn={this.state.loggedIn} />
 				{/*  ROUTES */}
 				{/* <Route exact path="/" component={Home} /> */}
 				<Route exact path="/" render={() => <Home user={this.state.user} />} />
@@ -141,8 +137,6 @@ class App extends Component {
 				/>
 				<Route exact path="/signup" component={SignupForm} />
 				<Route exact path="/game" component={Game} />
-				<Route exact path="/lose" component={Lose} />
-				<Route exact path="/win" component={Win} />
 				{/* <LoginForm _login={this._login} /> */}
 			</div>
 		)

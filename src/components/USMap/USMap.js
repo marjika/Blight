@@ -1,5 +1,5 @@
 import React from 'react';
-//import Button from "../Button";
+import Button from "../Button";
 import usmap from '../images/USA.jpg';
 import cities from "../../cities.json";
 import "./USMap.css";
@@ -37,12 +37,22 @@ class USMap extends React.Component {
       }
     }
 
+    // componentDidUpdate() {
+    //     this.updateCanvas();
+    // }
+    // updateCanvas() {
+    //     //const ctx = this.refs.canvas.getContext('2d');
+    //     //ctx.clearRect(0,0, 300, 300);
+    //     // draw children “components”
+    //     rect({ctx, x: 10, y: 10, width: 10, height: 10});
+    //     rect({ctx, x: 35, y: 110, width: 25, height: 25});
+    // }
     
     render() {
       return(
         <div className="background">
           <canvas ref="canvas" width={1200} height={841} />
-          <img  ref="image" src={usmap} className="hidden" alt="" style={{width:"1200px", height:"841px"}}/>
+          <img  ref="image" src={usmap} className="hidden" style={{width:"1200px", height:"841px"}}/>
         </div>
       )
     }

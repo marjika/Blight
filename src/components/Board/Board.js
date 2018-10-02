@@ -1,9 +1,8 @@
 import React from "react";
 import CityList from "../CityList";
-//import Player from "../Player";
+import Player from "../Player";
 import USMap from "../USMap";
 import Modal from "../Modal";
-import Footer from "../Footer";
 import { Col, Row, Container } from "../Grid";
 import cities from "../../cities.json";
 import staff from "../../players.json";
@@ -37,7 +36,7 @@ class Board extends React.Component {
         this.state = {
             staff,
             cities,
-            infections: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            infections: [],
             sampleFound: false,
             proteinFound: false,
             scientistFound: false,
@@ -47,47 +46,18 @@ class Board extends React.Component {
             missionThree: false,
             missionFour: false,
             show: false,
-            modalText: "",
-            outbreaks: 0,
-            moves: 0
+            modalText: ""
           }; 
     }
 
     componentDidMount() {
-        this.drawCanvas()
+        this.updateCanvas()
     }
 
 
     componentDidUpdate() {
         this.updateCanvas();
     }
-
-    drawCanvas() {
-        const canvas = this.refs.canvas
-        const ctx = canvas.getContext("2d")
-        const img = this.refs.image
-      
-        ctx.drawImage(img, 0, 0, img.width, img.height,    
-                          0, 0, canvas.width, canvas.height);
-        this.state.infections.map((item, index) => {
-            circle(ctx, cities[index].x, cities[index].y, item)
-        });
-    }
-
-        // updateCanvas() {
-    //     const canvas = this.refs.canvas
-    //     const ctx = canvas.getContext("2d")
-    //     const img = this.refs.image
-
-    //     img.onload = () => {
-    //         ctx.drawImage(img, 0, 0, img.width, img.height,
-    //             0, 0, canvas.width, canvas.height);
-
-    //         this.state.infections.map((item, index) => {
-    //             circle(ctx, cities[index].x, cities[index].y, item)
-    //         });
-    //     }
-    // }
 
     clearCanvas() {
         const canvas = this.refs.canvas
@@ -102,7 +72,11 @@ class Board extends React.Component {
       
           ctx.drawImage(img, 0, 0, img.width, img.height,    
                             0, 0, canvas.width, canvas.height);
+          //ctx.font = "30px Comic Sans MS";
+        //   ctx.fillStyle = "red";
           this.state.infections.map((item, index) => {
+              //rect({ctx, x: cities[index].x, y: cities[index].y, width: 10, height: 10})
+            //   ctx.fillText(item, cities[index].x, cities[index].y)
               circle(ctx, cities[index].x, cities[index].y, item)
           });
         
@@ -205,72 +179,60 @@ class Board extends React.Component {
         }
     }
 
-    //sets the array of infections so they can be rendered as circles on the map
     cityInfectionArrayChange = (array) => {
         const infections = array;
         this.setState({ infections: infections }, () => {
             this.clearCanvas();
             this.updateCanvas();
+            // console.log(this.refs.canvas.getContext("2d"))
         })
-    }
-
-    //Gets the number of moves and outbreaks from CityList
-    sendStats = (actions, outbreakCount) => {
-     
-        this.setState({ moves: actions, outbreaks: outbreakCount})
     }
 
 
     render() {
         return (
         <Container fluid>
-            <div className="Board">
-            <Row>
-            <Col size="md-9">
-                <canvas ref="canvas" width={1000} height={563}/>
-                <img ref="image" src={usmap} alt="" className="hidden" />
-            </Col>
+         <div className="Board">
+         <Row>
+         <Col size="md-9">
+            <canvas ref="canvas" width={1000} height={563}/>
+            <img ref="image" src={usmap} className="hidden" />
+        </Col>
+            {/* {this.state.staff.map(person => (
+                <Player
+                    name={person.name}
+                    occupation={person.occupation}
+                    id={person.id}
+                    key={person.id}
+                    currentLocation={this.state.currentLocation}
+                />
+            ))} */}
             <Col size="md-3">
-                <CityList
-                    cities={cities}
-                    sampleCityId={this.props.sampleCityId}
-                    proteinCityId={this.props.proteinCityId}
-                    scientistCityId={this.props.scientistCityId}
-                    immuneManCityId={this.props.immuneManCityId}
-                    foundSample={this.foundSample}
-                    sample={this.state.sampleFound}
-                    mission1={this.mission1}
-                    foundProtein={this.foundProtein}
-                    protein={this.state.proteinFound}
-                    mission2={this.mission2}
-                    foundScientist={this.foundScientist}
-                    scientist={this.state.scientistFound}
-                    mission3={this.mission3}
-                    foundImmuneMan={this.foundImmuneMan}
-                    immuneMan={this.state.immuneManFound}
-                    mission4={this.mission4}
-                    loseGame={this.props.loseGame}
-                    cityInfectionArrayChange={this.cityInfectionArrayChange}
-                    sendStats={this.sendStats}
-                    />
+            <CityList
+                cities={cities}
+                sampleCityId={this.props.sampleCityId}
+                proteinCityId={this.props.proteinCityId}
+                scientistCityId={this.props.scientistCityId}
+                immuneManCityId={this.props.immuneManCityId}
+                foundSample={this.foundSample}
+                sample={this.state.sampleFound}
+                mission1={this.mission1}
+                foundProtein={this.foundProtein}
+                protein={this.state.proteinFound}
+                mission2={this.mission2}
+                foundScientist={this.foundScientist}
+                scientist={this.state.scientistFound}
+                mission3={this.mission3}
+                foundImmuneMan={this.foundImmuneMan}
+                immuneMan={this.state.immuneManFound}
+                mission4={this.mission4}
+                loseGame={this.props.loseGame}
+                cityInfectionArrayChange={this.cityInfectionArrayChange}
+                />
                 </Col>
                 </Row>
                 <Row>
-                    <Modal show={this.state.show} modalText={this.state.modalText}></Modal>
-                </Row>
-                <Row>
-                    <Footer
-                    moves={4 - this.state.moves}
-                    outbreaks={this.state.outbreaks}
-                    sample={this.state.sampleFound}
-                    mission1={this.state.missionOne}
-                    protein={this.state.proteinFound}
-                    mission2={this.state.missionTwo}
-                    scientist={this.state.scientistFound}
-                    mission3={this.state.missionThree}
-                    immuneMan={this.state.immuneManFound}
-                    mission4={this.state.missionFour}
-                    />
+                <Modal show={this.state.show} modalText={this.state.modalText}></Modal>
                 </Row>
             </div>
             </Container>

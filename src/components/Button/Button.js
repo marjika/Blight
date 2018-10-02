@@ -1,51 +1,33 @@
 import React from "react";
-import {Layer, Rect, Circle, Stage, Group} from "react-konva";
-import Konva from 'konva';
-import cities from "../../cities.json";
+import ReactDOM from 'react-dom';
 
-// function rect(props) {
-//     const {ctx, x, y, width, height} = props;
-//     ctx.fillRect(x, y, width, height);
-// }
+function rect(props) {
+    const {ctx, x, y, width, height} = props;
+    ctx.fillRect(x, y, width, height);
+}
 
 class Button extends React.Component {
+    constructor(props){
+        super(props)
+          this.state = {
+            xCoordinate: 10,
+            yCoordinate: 10
+          }
+      }
+      componentDidMount() {
+        let canvas = ReactDOM.findDOMNode(this.refs.canvas);
+        let ctx = canvas.getContext('2d');
+        rect({ctx, x: this.state.xCoordinate, y: this.state.yCoordinate, width: 100, height: 100})
 
-        // constructor(...args) {
-        //   super(...args);
-        //   this.state = {
-        //     color: 'green'
-        //   };
-        //   this.handleClick = this.handleClick.bind(this);
-        // }
-        // handleClick() {
-        //   this.setState({
-        //     color: Konva.Util.getRandomColor()
-        //   });
-        // }
-        render() {
-            return (
-                cities.map(item => (
-                    
-                <Rect
-                    x={item.x} y={item.y} width={25} height={15}
-                    fill={'blue'}
-                    // shadowBlur={10}
-                    // onClick={this.handleClick}
-                />
-                )
-            ))
-        }
-      
-
-
-
+    }
     
-    // render() {
-    //     return (
-    //         rect({ x: 200, y: 300, width: 100, height: 100})
-
-    //     );
-    // }
+    render() {
+        return (
+        <div>
+            <canvas ref="canvas" />
+        </div>
+        );
+    }
 }
 
 export default Button;

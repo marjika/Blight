@@ -11,7 +11,7 @@ class Player extends React.Component {
   
   <div className="player">
 
-      <h6>{this.props.name}, {this.props.occupation}, </h6>
+      <h6>{this.props.name}, {this.props.occupation}, is in</h6>
      
   </div>
 
